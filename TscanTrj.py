@@ -49,7 +49,7 @@ for line in trjFileIn[1:]:
         a = datetime.strptime(a, dateFormatF)  # converter para datetime object
     except:
         a = datetime.strptime(a, dateFormatI)  # converter para datetime object
-    a = a.timestamp() - 315964800.0 - 18.0  # nota 1
+    a = a.timestamp() - 315964800.0  # nota 1
     a = str(a - 1000000000.0)  # nota 2
     b = ' '.join(line[1:4])
     c = ' '.join(euler_angles)
@@ -57,10 +57,11 @@ for line in trjFileIn[1:]:
 
 fileNum = 1
 fileOut = open('trj_to_tscan' + '_' + str(fileNum) + '.txt', 'w')
-gapSecLimit = 3
+gapSecLimit = 20
+splitTrj = False
 for idx, line in enumerate(trjOut[1:]):
     lineBefore = trjOut[idx]
-    if math.fabs(float(line.split(' ')[0]) - float(lineBefore.split(' ')[0])) > gapSecLimit:
+    if math.fabs(float(line.split(' ')[0]) - float(lineBefore.split(' ')[0])) > gapSecLimit and splitTrj:
         fileNum += 1
         fileOut.close()
         fileOut = open('trj_to_tscan' + '_' + str(fileNum) + '.txt', 'w')
